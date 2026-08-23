@@ -43,8 +43,8 @@ const VERTEX_GATEWAY_HOST = "https://gateway.prod.vertexprotocol.com";
 
 export default {
   async fetch(request, env) {
-    const configuredSecret = env.RELAY_SECRET;
-    const incomingSecret = request.headers.get("X-Relay-Secret");
+    const configuredSecret = (env.RELAY_SECRET || "").trim();
+    const incomingSecret = (request.headers.get("X-Relay-Secret") || "").trim();
 
     if (!configuredSecret || incomingSecret !== configuredSecret) {
       return new Response(JSON.stringify({ error: "Forbidden - missing or wrong X-Relay-Secret" }), {
